@@ -1,0 +1,21 @@
+{
+    "name": "hutong/scws",
+    "description": "scws 中文分词",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hutong",
+            "email": "hutong0521@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+          "HuTong\\Scws\\": ""
+        }
+    }
+}
