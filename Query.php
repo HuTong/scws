@@ -41,9 +41,9 @@ class Query
         {
             if(is_file($rule))
             {
-                $this->swcs->set_rule($rule);
+                $this->scws->set_rule($rule);
             }elseif(is_file(is_file($fpath.'/'.$rule))){
-                $this->swcs->set_rule($fpath.'/'.$rule);
+                $this->scws->set_rule($fpath.'/'.$rule);
             }
         }
     }
@@ -88,16 +88,16 @@ class Query
     {
         if(is_file($rule))
         {
-            $this->swcs->set_rule($rule);
+            $this->scws->set_rule($rule);
         }
     }
 
     private function sendText($text, $ignore = true, $multi = false, $duality = false)
     {
-        $this->swcs->set_ignore($ignore);
-        $this->swcs->set_multi($multi);
-        $this->swcs->set_duality($duality);
-        $this->swcs->send_text($text);
+        $this->scws->set_ignore($ignore);
+        $this->scws->set_multi($multi);
+        $this->scws->set_duality($duality);
+        $this->scws->send_text($text);
     }
 
     /**
@@ -116,7 +116,7 @@ class Query
         $this->sendText($text, $ignore, $multi, $duality);
 
         $words = array();
-        while ($result = $this->swcs->get_result())
+        while ($result = $this->scws->get_result())
         {
             foreach ($result as $tmp)
             {
