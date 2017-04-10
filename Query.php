@@ -42,7 +42,7 @@ class Query
             if(is_file($rule))
             {
                 $this->scws->set_rule($rule);
-            }elseif(is_file(is_file($fpath.'/'.$rule))){
+            }elseif(is_file($fpath.'/'.$rule)){
                 $this->scws->set_rule($fpath.'/'.$rule);
             }
         }
