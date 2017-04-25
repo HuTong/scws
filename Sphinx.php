@@ -34,7 +34,7 @@ class Sphinx
     {
         $this->sphinx->SetFieldWeights(array(100,1));
         $this->sphinx->SetMatchMode($mode);
-
+        $this->sphinx->setMaxQueryTime(10);
         if($options)
         {
             if((isset($options['filter']) && $options['filter']) && (isset($options['filtervals']) && $options['filtervals']))
