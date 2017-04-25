@@ -17,8 +17,7 @@ class Sphinx
         {
             throw new \Exception('sphinx 扩展未加载');
         }
-
-        $sphinx = SphinxClient();
+        $sphinx = new \SphinxClient;
         $sphinx->setServer($host, $port);
         if($keepActive)
         {
@@ -31,19 +30,18 @@ class Sphinx
         $this->sphinx = $sphinx;
     }
 
-    public function Query($q, $index, $mode = SPH_MATCH_ALL, $options = array())
+    public function Query($q, $index, $mode = SPH_MATCH_EXTENDED2, $options = array())
     {
-        $this->sphinx->SetArrayResult();
         $this->sphinx->SetFieldWeights(array(100,1));
         $this->sphinx->SetMatchMode($mode);
 
         if($options)
         {
-            if((isset($options['filter']) && $options['filter']) && ($options['filtervals']) && $options['filtervals']))
+            if((isset($options['filter']) && $options['filter']) && (isset($options['filtervals']) && $options['filtervals']))
             {
                 $this->sphinx->SetFilter($options['filter'], $options['filtervals']);
             }
-            if((isset($options['groupby']) && $options['groupby']) && ($options['groupsort']) && $options['groupsort']))
+            if((isset($options['groupby']) && $options['groupby']) && (isset($options['groupsort']) && $options['groupsort']))
             {
                 $this->sphinx->SetGroupBy($options['groupby'], SPH_GROUPBY_ATTR, $options['groupsort']);
             }
@@ -63,7 +61,7 @@ class Sphinx
             {
                 $this->sphinx->SetSelect($options['select']);
             }
-            $limit = isset($options['limit']) ? (int)$options['limit'] ? 1000;
+            $limit = isset($options['limit']) ? (int)$options['limit'] : 1000;
             if($limit)
             {
                 $this->sphinx->SetLimits(0, $limit, ($limit>1000) ? $limit : 1000);
