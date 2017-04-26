@@ -106,6 +106,13 @@ class Sphinx
         return $res;
     }
 
+    public function buildExcerpts($docs, $index, $words, $opts = array())
+    {
+        $info = $this->sphinx->BuildExcerpts($docs, $index, $words, $opts);
+
+        return $info;
+    }
+
     public function close()
     {
         return $this->sphinx->close();
