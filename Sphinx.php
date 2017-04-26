@@ -41,24 +41,21 @@ class Sphinx
             {
                 foreach ($options['filters'] as $key => $value)
                 {
-                    if(is_array($value))
-                    {
-                        $this->sphinx->setFilter($key, $value[0], isset($value[1]) ? $value[1]:false);
-                    }else{
-                        $this->sphinx->setFilter($key, $value);
-                    }
+                    $this->sphinx->setFilter($key, $value[0], isset($value[1]) ? $value[1]:false);
                 }
             }
             if(isset($options['filterRanges']) && $options['filterRanges'])
             {
                 foreach ($options['filterRanges'] as $key => $value)
                 {
-                    if(is_array($value))
-                    {
-                        $this->sphinx->setFilterRange($key, $value[0], $value[1], isset($value[2]) ? $value[2]:false);
-                    }else{
-                        $this->sphinx->setFilterRange($key, , $value[0], $value[1]);
-                    }
+                    $this->sphinx->setFilterRange($key, $value[0], $value[1], isset($value[2]) ? $value[2]:false);
+                }
+            }
+            if(isset($options['filterFloatRanges']) && $options['filterFloatRanges'])
+            {
+                foreach ($options['filterFloatRanges'] as $key => $value)
+                {
+                    $this->sphinx->setFilterFloatRange($key, $value[0], $value[1], isset($value[2]) ? $value[2]:false);
                 }
             }
             if(isset($options['groupby']) && $options['groupby'])
