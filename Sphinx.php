@@ -32,39 +32,59 @@ class Sphinx
 
     public function Query($q, $index, $mode = SPH_MATCH_EXTENDED2, $options = array())
     {
-        $this->sphinx->SetFieldWeights(array(100,1));
-        $this->sphinx->SetMatchMode($mode);
+        $this->sphinx->setFieldWeights(array(100,1));
+        $this->sphinx->setMatchMode($mode);
         $this->sphinx->setMaxQueryTime(10);
         if($options)
         {
-            if((isset($options['filter']) && $options['filter']) && (isset($options['filtervals']) && $options['filtervals']))
+            if(isset($options['filters']) && $options['filters'])
             {
-                $this->sphinx->SetFilter($options['filter'], $options['filtervals']);
+                foreach ($options['filters'] as $key => $value)
+                {
+                    if(is_array($value))
+                    {
+                        $this->sphinx->setFilter($key, $value[0], isset($value[1]) ? $value[1]:false);
+                    }else{
+                        $this->sphinx->setFilter($key, $value);
+                    }
+                }
             }
-            if((isset($options['groupby']) && $options['groupby']) && (isset($options['groupsort']) && $options['groupsort']))
+            if(isset($options['filterRanges']) && $options['filterRanges'])
             {
-                $this->sphinx->SetGroupBy($options['groupby'], SPH_GROUPBY_ATTR, $options['groupsort']);
+                foreach ($options['filterRanges'] as $key => $value)
+                {
+                    if(is_array($value))
+                    {
+                        $this->sphinx->setFilterRange($key, $value[0], $value[1], isset($value[2]) ? $value[2]:false);
+                    }else{
+                        $this->sphinx->setFilterRange($key, , $value[0], $value[1]);
+                    }
+                }
+            }
+            if(isset($options['groupby']) && $options['groupby'])
+            {
+                $this->sphinx->setGroupBy($options['groupby'][0], isset($options['groupby'][2]) ? $options['groupby'][2]:SPH_GROUPBY_ATTR, $options['groupby'][1]);
             }
             if(isset($options['sortby']) && $options['sortby'])
             {
-                $this->sphinx->SetSortMode(SPH_SORT_EXTENDED, $options['sortby']);
+                $this->sphinx->setSortMode(SPH_SORT_EXTENDED, $options['sortby']);
             }
             if(isset($options['sortexpr']) && $options['sortexpr'])
             {
-                $this->sphinx->SetSortMode(SPH_SORT_EXPR, $options['sortexpr']);
+                $this->sphinx->setSortMode(SPH_SORT_EXPR, $options['sortexpr']);
             }
             if(isset($options['distinct']) && $options['distinct'])
             {
-                $this->sphinx->SetGroupDistinct($options['distinct']);
+                $this->sphinx->setGroupDistinct($options['distinct']);
             }
             if(isset($options['select']) && $options['select'])
             {
-                $this->sphinx->SetSelect($options['select']);
+                $this->sphinx->setSelect($options['select']);
             }
             $limit = isset($options['limit']) ? (int)$options['limit'] : 1000;
             if($limit)
             {
-                $this->sphinx->SetLimits(0, $limit, ($limit>1000) ? $limit : 1000);
+                $this->sphinx->setLimits(0, $limit, ($limit>1000) ? $limit : 1000);
             }
             if(isset($options['ranker']) && $options['ranker'])
             {
@@ -72,11 +92,14 @@ class Sphinx
             }
             if(isset($options['resArray']) && $options['resArray'])
             {
-                $this->sphinx->SetArrayResult(true);
+                $this->sphinx->setArrayResult(true);
             }
         }
 
         $res = $this->sphinx->query($q, $index);
+
+        $this->sphinx->resetFilters();
+        $this->sphinx->resetGroupBy();
 
         if($res == false)
         {
@@ -84,5 +107,10 @@ class Sphinx
         }
 
         return $res;
+    }
+
+    public function close()
+    {
+        return $this->sphinx->close();
     }
 }
