@@ -63,13 +63,13 @@ class Query
         switch (strtolower($ext))
         {
             case 'txt':
-                $mode = 'SCWS_XDICT_TXT';
+                $mode = SCWS_XDICT_TXT;
                 break;
             case 'xdb':
-                $mode = 'SCWS_XDICT_XDB';
+                $mode = SCWS_XDICT_XDB;
                 break;
             default:
-                $mode = 'SCWS_XDICT_MEM';
+                $mode = SCWS_XDICT_MEM;
                 break;
         }
         if(is_file($dict))
