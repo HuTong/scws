@@ -57,7 +57,8 @@ class Query
      */
     public function addDict($dict)
     {
-        $ext = end(explode('.', $dict));
+        $exp = explode('.', $dict);
+        $ext = end($exp);
 
         switch (strtolower($ext))
         {
